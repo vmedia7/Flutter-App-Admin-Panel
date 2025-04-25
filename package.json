@@ -1,0 +1,23 @@
+{
+  "name": "rapture_ready_dashboard",
+  "version": "1.0.0",
+  "description": "Dashboard for eternity ready apps",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eternityready2/Mobile-App-Admin.git"
+  },
+  "author": "Miracle Nnaoma",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eternityready2/Mobile-App-Admin/issues"
+  },
+  "homepage": "https://github.com/eternityready2/Mobile-App-Admin#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  }
+}
