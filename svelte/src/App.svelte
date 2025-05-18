@@ -5,6 +5,7 @@
 	import SectionEditor from './components/SectionEditor.svelte';
 	import Preview from './components/Preview.svelte';
 	import Loader from './components/Loader.svelte';
+	import Dialog from './components/Dialog.svelte';
   
 	// Initial data structure
 	let dashboardData = {
@@ -53,10 +54,20 @@
 		{ id: "nav-1", icon: "🏠", text: "Home", color: "#0066ff", link: "#", active: true },
 		{ id: "nav-2", icon: "👥", text: "Rapture R", color: "#888", link: "#", active: false },
 		{ id: "nav-3", icon: "📺", text: "TV", color: "#888", link: "#", active: false },
-		{ id: "nav-4", icon: "📻", text: "Radio", color: "#888", link: "#", active: false },
-		{ id: "nav-5", icon: "•••", text: "More", color: "#888", link: "#", active: false }
+		{ id: "nav-4", icon: "📻", text: "Radio", color: "#888", link: "#", active: false }
+	  ],
+	  more: [
+		{ id: "more-1", icon: "📺", text: "Home", link: "#" },
+		{ id: "more-2", icon: "💲", text: "Rapture R", link: "#" },
 	  ]
 	};
+
+	function generateSectionId() {
+		return 's' + Math.random().toString(36).slice(2, 6); // 4 random chars
+	}
+
+	// Should show more dialog
+	let showMoreDialog = false;
   
 	// Current section being edited
 	let currentSectionId = 'section1';
@@ -159,6 +170,15 @@
 		}
 	  }
 	}
+
+	// Update more button
+	function updateMoreButton(buttonData) {
+		const btnIndex = dashboardData.more.findIndex(item => item.id === buttonData.id);
+		if (btnIndex !== -1) {
+			dashboardData.more[btnIndex] = buttonData;
+			dashboardData = {...dashboardData};
+		}
+	}
 	
 	// Delete button
 	function deleteButton(buttonData) {
@@ -178,6 +198,43 @@
 	  
 	  // Force svelte to update
 	  dashboardData = {...dashboardData};
+	}
+
+	// Delete more button
+	function deleteMoreButton(buttonData) {
+		const btnIndex = dashboardData.more.findIndex(item => item.id === buttonData.id)
+		if (btnIndex !== -1) {
+			dashboardData.more.splice(btnIndex, 1);
+			dashboardData = {...dashboardData};
+		}
+	}
+
+	// create more button
+	function createMoreButton(btnData) {
+		dashboardData.more.push(btnData);
+		dashboardData = {...dashboardData};
+	}
+
+	// delete current section
+	function deleteSection() {
+		const sectionIndex = dashboardData.sections.findIndex(s => s.id === currentSectionId);
+		if (sectionIndex !== -1) {
+			dashboardData.sections.splice(sectionIndex, 1);
+			dashboardData = {...dashboardData};
+		}
+	}
+
+	// Add new section
+	function addSection() {
+		const newSectionData = {
+		  id: generateSectionId(),
+		  title: "New Section",
+		  buttons: []
+		}
+
+		dashboardData.sections.push(newSectionData);
+		currentSectionId = newSectionData.id;
+		dashboardData = {...dashboardData};
 	}
 
 	function downloadData() {
@@ -229,23 +286,25 @@
   
 <style>
 	:global(:root) {
-	  --primary-color: #0066ff;
-	  --dark-bg: #2d3e4a;
-	  --light-bg: #f5f5f5;
-	  --text-color: #333;
-	  --border-color: #ddd;
+		--primary-color: #0066ff;
+		--dark-bg: #2d3e4a;
+		--light-bg: #f5f5f5;
+		--text-color: #333;
+		--border-color: #ddd;
 	}
 	
 	:global(*) {
-	  box-sizing: border-box;
-	  margin: 0;
-	  padding: 0;
-	  font-family: Arial, sans-serif;
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+		font-family: Arial, sans-serif;
+		scrollbar-color: #222 #000;
+    	scrollbar-width: thin;
 	}
 	
 	:global(body) {
-	  background-color: var(--light-bg);
-	  color: var(--text-color);
+		background-color: var(--light-bg);
+		color: var(--text-color);
 	}
 
 	.loading-container {
@@ -258,80 +317,80 @@
 	}
 	
 	.container {
-	  display: flex;
-	  flex-direction: column;
-	  min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+		min-height: 100vh;
 	}
 	
 	header {
-	  background-color: var(--dark-bg);
-	  color: white;
-	  padding: 1rem;
+		background-color: var(--dark-bg);
+		color: white;
+		padding: 1rem;
 	}
 	
 	.dashboard {
-	  display: flex;
-	  flex: 1;
-	  flex-direction: row;
+		display: flex;
+		flex: 1;
+		flex-direction: row;
 	}
 	
+	.editor-panel {
+		flex: 1;
+		padding: 1rem;
+		border-right: 1px solid var(--border-color);
+		overflow-y: auto;
+		background-color: white;
+	}
+	
+	.section {
+	  	margin-bottom: 2rem;
+	}
+	
+	h2 {
+		margin-bottom: 1rem;
+		color: var(--dark-bg);
+	}
+	
+	.form-group {
+	  	margin-bottom: 1rem;
+	}
+	
+	label {
+		display: block;
+		margin-bottom: 0.5rem;
+		font-weight: bold;
+	}
+	
+	select {
+		width: 100%;
+		padding: 0.5rem;
+		border: 1px solid var(--border-color);
+		border-radius: 4px;
+	}
+	
+	button {
+		background-color: var(--primary-color);
+		color: white;
+		border: none;
+		padding: 0.5rem 1rem;
+		border-radius: 4px;
+		cursor: pointer;
+		margin-right: 0.5rem;
+		margin-top: 0.5rem;
+	}
+	
+	button:hover {
+	  	opacity: 0.9;
+	}
+	
+	.export-btn {
+	  	margin-top: 1rem;
+	}
+
 	@media (max-width: 768px) {
 	  .dashboard {
 		flex-direction: column;
 	  }
-	}
-	
-	.editor-panel {
-	  flex: 1;
-	  padding: 1rem;
-	  border-right: 1px solid var(--border-color);
-	  overflow-y: auto;
-	  background-color: white;
-	}
-	
-	.section {
-	  margin-bottom: 2rem;
-	}
-	
-	h2 {
-	  margin-bottom: 1rem;
-	  color: var(--dark-bg);
-	}
-	
-	.form-group {
-	  margin-bottom: 1rem;
-	}
-	
-	label {
-	  display: block;
-	  margin-bottom: 0.5rem;
-	  font-weight: bold;
-	}
-	
-	select {
-	  width: 100%;
-	  padding: 0.5rem;
-	  border: 1px solid var(--border-color);
-	  border-radius: 4px;
-	}
-	
-	button {
-	  background-color: var(--primary-color);
-	  color: white;
-	  border: none;
-	  padding: 0.5rem 1rem;
-	  border-radius: 4px;
-	  cursor: pointer;
-	  margin-right: 0.5rem;
-	  margin-top: 0.5rem;
-	}
-	
-	button:hover {
-	  opacity: 0.9;
-	}
-	
-	.export-btn {
-	  margin-top: 1rem;
 	}
 </style>
 
@@ -360,12 +419,21 @@
 				</div>
 				
 				<SectionEditor currentSectionId={currentSectionId} sections={dashboardData.sections} on:updateTitle={e => updateSectionTitle(e.detail)} />
+
+				<div style="display: flex; align-items: center; justify-content: space-between;">
+					<div>
+						<button style="background-color: darkgreen; color: white;" on:click={addSection}>Add New Section</button>
+						<button style="background-color: orangered; color: white;" class="export-btn" on:click={deleteSection}>Delete Section &times;</button>
+					</div>
+
+					<div>
+						<button on:click={addButton}>Add New Button</button>
+						<button class="export-btn" on:click={exportData}>Export Data</button>
+					</div>
+				</div>	
+			</div>
 				
-				<button on:click={addButton}>Add New Button</button>
-				<button class="export-btn" on:click={exportData}>Export Data</button>
-				</div>
-				
-				<div class="section">
+			<div class="section">
 					<h2>Buttons Editor</h2>
 				
 					{#if currentSectionId === 'bottom-nav'}
@@ -380,7 +448,13 @@
 				</div>
 			</div>
 			
-			<Preview {dashboardData} />
+			<Preview {dashboardData} onShowMore={() => { showMoreDialog = true }}/>
 		</div>
 	</div>
+{/if}
+
+{#if showMoreDialog}
+	<Dialog data={dashboardData.more} 
+		on:close={() => {showMoreDialog = false}} on:update={e => updateMoreButton(e.detail)} 
+		on:delete={e => deleteMoreButton(e.detail)} on:create={e => createMoreButton(e.detail)} />
 {/if}

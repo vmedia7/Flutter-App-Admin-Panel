@@ -198,14 +198,10 @@
       "color": "#888",
       "link": "#",
       "active": false
-    },
-    {
-      "id": "nav-5",
-      "icon": "•••",
-      "text": "More",
-      "color": "#888",
-      "link": "#",
-      "active": false
     }
-  ]
+  ],
+  "more": [
+	  { "id": "more-1", "icon": "📺", "text": "Home", "link": "#" },
+		{ "id": "more-2", "icon": "💲", "text": "Rapture R", "link": "#" }
+	]
 }

@@ -1,6 +1,7 @@
 <!-- Preview.svelte -->
 <script>
     export let dashboardData;
+    export let onShowMore;
 </script>
   
 <style>
@@ -141,5 +142,10 @@
                 </div>
             </a>
         {/each}
+
+        <a href="#more" class="nav-item" on:click={() => { onShowMore(); }}>
+          <div class="nav-icon" style="color: #888;">•••</div>
+          <div style="color: #888;">More</div>
+        </a>
     </div>
 </div>

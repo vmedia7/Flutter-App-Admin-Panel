@@ -3,6 +3,8 @@
     import { createEventDispatcher } from 'svelte';
     
     export let buttonData;
+
+    export let showColor = true;
     
     const dispatch = createEventDispatcher();
     
@@ -131,7 +133,9 @@
 <div class="button-editor">
     <button class="accordion {isOpen ? 'active' : ''}" on:click={toggleAccordion}>
       {buttonData.isNavItem ? 'Nav Item' : 'Button'}: {buttonData.text}
-      <span class="color-preview" style="background-color:{buttonData.color}"></span>
+      {#if showColor}
+        <span class="color-preview" style="background-color:{buttonData.color}"></span>
+      {/if}
     </button>
     
     <div class="panel {isOpen ? 'open' : ''}">
@@ -144,11 +148,13 @@
             <label for="text-{buttonData.id}">Text:</label>
             <input type="text" id="text-{buttonData.id}" bind:value={buttonData.text} placeholder="Enter button text" />
         </div>
-      
-        <div class="form-group">
+
+        {#if showColor}
+          <div class="form-group">
             <label for="color-{buttonData.id}">Color:</label>
             <input type="color" id="color-{buttonData.id}" bind:value={buttonData.color} />
-        </div>
+          </div>
+        {/if}
       
         <div class="form-group">
             <label for="link-{buttonData.id}">Link:</label>
