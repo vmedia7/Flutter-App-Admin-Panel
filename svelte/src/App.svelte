@@ -62,10 +62,6 @@
 	  ]
 	};
 
-	function generateSectionId() {
-		return 's' + Math.random().toString(36).slice(2, 6); // 4 random chars
-	}
-
 	// Should show more dialog
 	let showMoreDialog = false;
   
@@ -74,6 +70,15 @@
 
 	// Is page loading
 	let isLoading = true;
+
+	//let isProduction = import.meta.env.MODE === 'production';
+	const isProduction = __DEV__ == 'false';
+
+	const path = isProduction ? "" : "http://127.0.0.1:8010"
+
+	function generateSectionId() {
+		return 's' + Math.random().toString(36).slice(2, 6); // 4 random chars
+	}
 	
 	// Handle section change
 	function handleSectionChange(event) {
@@ -83,7 +88,7 @@
 	// Add a new button to the current section
 	function addButton() {
 	  if (currentSectionId === 'bottom-nav') {
-		if (dashboardData.bottomNav.length < 5) {
+		if (dashboardData.bottomNav.length < 4) {
 		  const newId = `nav-${Date.now()}`;
 		  dashboardData.bottomNav = [...dashboardData.bottomNav, {
 			id: newId,
@@ -94,7 +99,7 @@
 			active: false
 		  }];
 		} else {
-		  alert("Maximum 5 navigation items allowed!");
+		  alert("Maximum 4 navigation items + \"more\" allowed!");
 		}
 	  } else {
 		const sectionIndex = dashboardData.sections.findIndex(s => s.id === currentSectionId);
@@ -252,7 +257,7 @@
 	// Export data as JSON
 	async function exportData() {
 		try {
-			let response = await fetch(/*'http://localhost:8000/update'*/'/update', {
+			let response = await fetch(`${path}/update`, {
 				method: 'POST',
 				body: JSON.stringify({data: dashboardData}),
 				headers: { 'Content-Type': 'application/json', "fetch-data": "true" }
@@ -268,7 +273,7 @@
 
 	async function loadContent() {
 		try {
-			let response = await fetch(/*'http://localhost:8000/data'*/'/data', {
+			let response = await fetch(`${path}/data`, {
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json', "fetch-data": "true" }
 			});
@@ -448,13 +453,13 @@
 				</div>
 			</div>
 			
-			<Preview {dashboardData} onShowMore={() => { showMoreDialog = true }}/>
+			<Preview {dashboardData} {path} onShowMore={() => { showMoreDialog = true }}/>
 		</div>
 	</div>
 {/if}
 
 {#if showMoreDialog}
-	<Dialog data={dashboardData.more} 
+	<Dialog {path} data={dashboardData.more} 
 		on:close={() => {showMoreDialog = false}} on:update={e => updateMoreButton(e.detail)} 
 		on:delete={e => deleteMoreButton(e.detail)} on:create={e => createMoreButton(e.detail)} />
 {/if}

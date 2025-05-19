@@ -3,6 +3,7 @@
     import { createEventDispatcher } from "svelte";
 
     export let data;
+    export let path;
 
     const dispatch = createEventDispatcher();
 
@@ -41,15 +42,15 @@
         
             <div class="content-container preview-container">
                 {#each data as content}
-                    <span class="nav-item">
+                    <a href={content.link} class="nav-item" target="_blank">
                         {#if (content.icon.startsWith("http") || content.icon.startsWith("/"))}
-                            <img class="nav-icon" src={content.icon} alt={content.text}>
+                            <img class="nav-icon" src={`${path}${content.icon}`} alt={content.text}>
                         {:else}
                             <span class="nav-icon">{content.icon}</span>
                         {/if}
         
                         <span style="color: #888;">{content.text}</span>
-                    </span>
+                    </a>
                 {/each}
             </div>
         </div>

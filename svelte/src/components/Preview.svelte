@@ -1,7 +1,8 @@
 <!-- Preview.svelte -->
 <script>
-    export let dashboardData;
-    export let onShowMore;
+  export let dashboardData;
+  export let onShowMore;
+  export let path;
 </script>
   
 <style>
@@ -106,10 +107,10 @@
         <div class="section-title">{section.title}</div>
         <div class="button-grid">
           {#each section.buttons as button}
-            <a href={button.link} class="app-button">
-              {#if button.icon.startsWith('http')}
+            <a href={button.link} class="app-button" target="_blank">
+              {#if (button.icon.startsWith('http') || button.icon.startsWith('/'))}
                 <div class="button-icon">
-                  <img src={button.icon} alt={button.text} style="width: 2rem; height: 2rem;" />
+                  <img src={`${path}${button.icon}`} alt={button.text} style="width: 2rem; height: 2rem;" />
                 </div>
               {:else}
                 <div class="button-icon" style="color: {button.color}">
@@ -127,10 +128,10 @@
     
     <div class="bottom-nav">
         {#each dashboardData.bottomNav as navItem}
-            <a href={navItem.link} class="nav-item">
-                {#if navItem.icon.startsWith('http')}
+            <a href={navItem.link} class="nav-item" target="_blank">
+                {#if (navItem.icon.startsWith('http') || navItem.icon.startsWith('/'))}
                     <div class="nav-icon">
-                        <img src={navItem.icon} alt={navItem.text} style="width: 1.5rem; height: 1.5rem;" />
+                        <img src={`${path}${navItem.icon}`} alt={navItem.text} style="width: 1.5rem; height: 1.5rem;" />
                     </div>
                 {:else}
                     <div class="nav-icon" style="color: {navItem.active ? navItem.color : '#888'}">

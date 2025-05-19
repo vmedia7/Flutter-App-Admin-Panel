@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 
-app.listen(8000, () => console.log(`Example app listening on port 8000!`));
+app.listen(8010, () => console.log(`App listening on port 8010!`));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'html', '/index.html'));
