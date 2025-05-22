@@ -12,6 +12,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 
 const databasePath = 'mongodb+srv://noreplyeternityready:sB2F8tB7OafaqEdi@cluster0.cs5csyk.mongodb.net/rapture_ready_panel?retryWrites=true&w=majority&appName=Cluster0';
+//const databasePath = 'mongodb://127.0.0.1:27017/rr_panel'
 
 mongoose.connect(databasePath)
     .then((result) => /*server*/ {
@@ -39,6 +40,7 @@ app.get('/data', async (req, res) => {
         const data = await getMenuData();
         res.status(200).json({status: true, message: "", data: data});
     } catch (error) {
+        console.log("error fetching data", error);
         res.status(500).send(error);
     }
 });
@@ -48,10 +50,11 @@ app.post('/update', async (req, res) => {
    // fs.writeFileSync(path.join(__dirname, "data", "dashboard-data.json"), JSON.stringify(data), "utf8");
 
    try {
-        await saveMenuData(data);
-        res.status(201).json({status: true, message: "", data: {}});
+    await saveMenuData(data);
+    res.status(201).json({status: true, message: "", data: {}});
    } catch (error) {
-        res.status(500).send(error);
+    console.log("error updating data", error);
+    res.status(500).send(error);
    }
 });
 
