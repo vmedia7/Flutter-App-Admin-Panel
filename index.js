@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const fs = require("fs");
+// const fs = require("fs");
 const path = require("path");
 const mongoose = require('mongoose');
 const Menu = require('./mongodb/menu');
@@ -16,9 +16,9 @@ const databasePath = 'mongodb+srv://noreplyeternityready:sB2F8tB7OafaqEdi@cluste
 
 mongoose.connect(databasePath)
     .then((result) => /*server*/ {
-        const rawData = fs.readFileSync(path.join(__dirname, "data", "dashboard-data.json"), "utf8");
-        const data = JSON.parse(rawData);
-        saveMenuData(data).catch(err => console.error("error saving data", err));
+        // const rawData = fs.readFileSync(path.join(__dirname, "data", "dashboard-data.json"), "utf8");
+        // const data = JSON.parse(rawData);
+        // saveMenuData(data).catch(err => console.error("error saving data", err));
 
         app.listen(8010, () => {
             console.log('listening on port 8010!');    
