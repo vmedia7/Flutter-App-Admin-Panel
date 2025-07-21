@@ -11,7 +11,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 
-const databasePath = 'mongodb+srv://noreplyeternityready:sB2F8tB7OafaqEdi@cluster0.cs5csyk.mongodb.net/rapture_ready_panel?retryWrites=true&w=majority&appName=Cluster0';
+const databasePath = 'mongodb+srv://stdmc:FcuVSKIzvOTpYXXz@cluster0.sibj2b7.mongodb.net/rapture_ready_panel?retryWrites=true&w=majority&appName=Cluster0';
+
 //const databasePath = 'mongodb://127.0.0.1:27017/rr_panel'
 
 mongoose.connect(databasePath)
